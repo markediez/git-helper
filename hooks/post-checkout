@@ -1,0 +1,42 @@
+#!/bin/bash
+PREV_HEAD=$1
+NEW_HEAD=$2
+FILE_CHECKOUT=$3
+
+function log() {
+	echo "$(date) - $@"
+}
+
+if [[ $FILE_CHECKOUT -eq 0 ]]
+then
+	log "File Checkout. Doing nothing"
+	exit 0
+else
+	log "Branch Checkout. Doing something"
+	log $1
+	log $2
+	log $3
+	BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+	# Expected branch formatting
+	# <type>/<project>-<ticket_num>-<descr>
+	PROJECT=$(echo $BRANCH | awk -F'-' '{print $1}' | awk -F'/' '{print $2}')
+	TICKET_NUM=$(echo $BRANCH | awk -F'-' '{print $2}')
+
+	log "Project" $PROJECT
+	log "Ticket #" $TICKET_NUM
+	if [[ -z $PROJECT ]] || [[ -z $TICKET_NUM ]]
+	then
+		log "Unsetting values"
+		git config --local --unset cb.project
+		git config --local --unset cb.ticket
+	else
+		log "Setting values"
+		# TODO: Validation
+		git config --local cb.project $PROJECT
+		git config --local cb.ticket $TICKET_NUM
+	fi
+fi
+
+
+
