@@ -46,7 +46,7 @@ fi
 if [[ ! -z $PROJECT ]] && [[ ! -z $TICKET_NUM ]]
 then
 	# Prepend commit message
-	PREFIX="[${PROJECT}-${TICKET_NUM}] "
+	PREFIX="${PROJECT}-${TICKET_NUM} - "
 	log "Adding prefix: " $PREFIX
 	sed -i.bak -e "1s/^/$PREFIX/" $COMMIT_MSG_FILE
 fi
