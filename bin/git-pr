@@ -1,0 +1,26 @@
+#!/bin/bash
+
+function log() {
+    echo "$(date) - $@"
+}
+
+FROM=${2:-$(git rev-parse --abbrev-ref HEAD)}
+TO=${1:-master}
+
+GIT_REMOTE=origin
+GIT_HOST=$(git remote get-url ${GIT_REMOTE} | sed -E 's/(git@)|(\.git)//g' | sed 's~:~/~g')
+TITLE=$(echo ${FROM} | cut -d'/' -f2 | sed '1s/^/[/' | tr '-' ' ' | sed 's/ /\] /2' | sed 's/ /-/')
+URL="https://${GIT_HOST}/compare/${TO}...${FROM}?expand=1&title=$(echo $TITLE | sed 's/ /%20/g')"
+
+log "Git Remote: ${GIT_REMOTE}"
+log "Git Host  : ${GIT_HOST}"
+log "Title: ${TITLE}"
+log "Opening PR $TO <- $FROM"
+log "URL: ${URL}"
+
+open $URL
+
+# Cheat Sheet
+# %5B - '['
+# %5D - ']'
+# %20 - ' '

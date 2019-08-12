@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+PROJ_DIR=$(git rev-parse --show-toplevel)
+
+if [[ -d $PROJ_DIR/.git/hooks ]]
+then
+    mv $PROJ_DIR/.git/hooks $PROJ_DIR/.git/hooks_old
+fi
+
+ln -s $ME_HOME/git/hooks $PROJ_DIR/.git/hooks

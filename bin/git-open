@@ -1,0 +1,13 @@
+#!/bin/bash
+
+REMOTE=origin
+URL=$(git remote get-url ${REMOTE} | sed 's/git@//g' | sed 's/.git//g' | sed 's~:~/~g' | sed '1s~^~https://~')
+
+# Open branch if not master
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [[ $BRANCH != "master" ]]
+then
+    URL="${URL}/tree/$BRANCH"
+fi
+
+open $URL
