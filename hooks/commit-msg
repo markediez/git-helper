@@ -1,0 +1,10 @@
+#!/bin/bash
+
+HAS_TICKET=$(egrep 'CB-[0-9]+' "$1")
+
+if [[ -z $HAS_TICKET ]]
+then
+    echo "Ticket number is required."
+    exit 1
+fi
+
